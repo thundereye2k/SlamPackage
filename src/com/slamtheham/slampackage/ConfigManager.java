@@ -54,10 +54,9 @@ public class ConfigManager {
 		}
 		
 		messagescfg = YamlConfiguration.loadConfiguration(messages);
-		
-		customenchantscfg = YamlConfiguration.loadConfiguration(customenchants);
-		
+		customenchantscfg = YamlConfiguration.loadConfiguration(customenchants);	
 		settingscfg = YamlConfiguration.loadConfiguration(settings);
+		
 		
 	}
 }

@@ -3,3 +3,8 @@ main: com.slamtheham.slampackage.Main
 description: UltraCore a complete remake of the popular skript plugin UltimateEssentialsPro
 version: Indev-v8.21.2018-0.01
 author: Developed by SlamTheHam
+
+commands:
+  enchanter:
+    usage: /<command>
+    description: Open the enchanter menu

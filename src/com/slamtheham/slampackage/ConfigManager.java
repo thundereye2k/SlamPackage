@@ -4,59 +4,94 @@ import java.io.File;
 import java.io.IOException;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 public class ConfigManager {
+	private  Main plugin = Main.getPlugin(Main.class);
 	
-	private Main plugin = Main.getPlugin(Main.class);
-	
-	public FileConfiguration messagescfg;
-	public File messages;
-	public FileConfiguration customenchantscfg;
-	public File customenchants;
-	public FileConfiguration settingscfg;
-	public File settings;
+	public  FileConfiguration msgCfg;
+	public  File msg;
+	public  FileConfiguration ceCfg;
+	public  File ce;
+	public  FileConfiguration setCfg;
+	public  File set;
 	
 	public void setup() {
-		if(!plugin.getDataFolder().exists()) {
+		if (!plugin.getDataFolder().exists()) {
 			plugin.getDataFolder().mkdir();
 		}
 		
-		messages = new File(plugin.getDataFolder(), "messages.yml");
-		customenchants = new File(plugin.getDataFolder(), "customenchants.yml");
-		settings = new File(plugin.getDataFolder(), "settings.yml");
+		msg = new File(plugin.getDataFolder(), "messages.yml");
+		ce = new File(plugin.getDataFolder(), "customenchants.yml");
+		set = new File(plugin.getDataFolder(), "settings.yml");
 		
-		if(!messages.exists()) {
+		if (!msg.exists()) {
 			try {
-				messages.createNewFile();
-				Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "messages.yml" + ChatColor.YELLOW + "has been created and loaded");
-			}catch(IOException e) {
-				Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.RED + "Could not create ''messages.yml'' file.");
-			}
-		}	
-		if(!customenchants.exists()) {
-			try {
-				customenchants.createNewFile();	
-				Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "customenchants.yml" + ChatColor.YELLOW + "has been created and loaded");
-			}catch(IOException e) {
-				Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.RED + "Could not create ''customenchants.yml'' file.");
-			}	
-		}
-		if(!settings.exists()) {
-			try {
-				settings.createNewFile();
-				Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "settings.yml" + ChatColor.YELLOW + "has been created and loaded");
-			}catch(IOException e) {
-				Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.RED + "Could not create ''settings.yml'' file.");
+				msg.createNewFile();
+			} catch(IOException e) {
+				Bukkit.getServer().getLogger().severe("Could not load ''messages.yml''!");
 			}
 		}
 		
-		messagescfg = YamlConfiguration.loadConfiguration(messages);
-		customenchantscfg = YamlConfiguration.loadConfiguration(customenchants);	
-		settingscfg = YamlConfiguration.loadConfiguration(settings);
+		if (!ce.exists()) {
+			try {
+				ce.createNewFile();
+			} catch(IOException e) {
+				Bukkit.getServer().getLogger().severe("Could not load ''customenchants.yml''!");
+			}
+		}
+		
+		if (!set.exists()) {
+			try {
+				set.createNewFile();
+			} catch(IOException e) {
+				Bukkit.getServer().getLogger().severe("Could not load ''settings.yml''!");
+			}
+		}
+		
+		msgCfg = YamlConfiguration.loadConfiguration(msg);
+		ceCfg = YamlConfiguration.loadConfiguration(ce);
+		setCfg = YamlConfiguration.loadConfiguration(set);
 		
 		
+		
+		msgCfg.options().copyDefaults(true);
+		saveDefaultConfig();
+		ceCfg.options().copyDefaults(true);
+		saveDefaultConfig();
+		setCfg.options().copyDefaults(true);
+		saveDefaultConfig();
+	}
+	
+	public void saveDefaultConfig() {
+	    if (msg == null) {
+	        msg = new File(plugin.getDataFolder(), "messages.yml");
+	    }
+	    if (!msg.exists()) { 
+	         plugin.saveResource("messages.yml", false);
+	     }
+	    if (ce == null) {
+	        ce = new File(plugin.getDataFolder(), "customenchants.yml");
+	    }
+	    if (!ce.exists()) { 
+	         plugin.saveResource("customenchants.yml", false);
+	     }
+	    
+	    if (set == null) {
+	        set = new File(plugin.getDataFolder(), "sets.yml");
+	    }
+	    if (!set.exists()) { 
+	         plugin.saveResource("sets.yml", false);
+	     }
 	}
 }
+
+
+
+
+
+
+
+
+

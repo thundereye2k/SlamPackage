@@ -16,15 +16,16 @@ public class EnchanterMenuListener implements Listener {
 	public void inventoryClick(InventoryClickEvent e) {
 		if (e.getClickedInventory().getTitle().equalsIgnoreCase(Utils.cc("&6&lEnchanter"))) {
 			Player player = (Player) e.getWhoClicked();
+			
 			if (e.getCursor() != null) {
 				e.setCancelled(true);
-				player.sendMessage("s");
+				
 			} if (e.isShiftClick()) {
 				e.setCancelled(true);
-				player.sendMessage("su");
+			
 			} else if (e.isShiftClick() && e.getRawSlot() >= e.getInventory().getSize()) {
 				e.setCancelled(true);
-				player.sendMessage("sup");
+				
 			}
 			if (e.getSlot() == 2) {
 				if (player.getLevel() >= 10) {

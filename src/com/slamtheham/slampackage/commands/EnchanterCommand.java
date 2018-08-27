@@ -20,7 +20,7 @@ public class EnchanterCommand implements CommandExecutor {
 		
 		if (label.equalsIgnoreCase("enchanter")) {
 			Player player = (Player) sender;
-			player.sendMessage(Main.instance.cfgm.msgCfg.getString("SlamPackage.Prefix") + Utils.cc(" &6&lEnchanter &bopened"));
+			player.sendMessage(Utils.cc(" &6&lEnchanter &bopened"));
 			player.openInventory(EnchanterMenu.enchanter);
 		}
 		return true;

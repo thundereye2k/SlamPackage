@@ -2,96 +2,65 @@ package com.slamtheham.slampackage;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 public class ConfigManager {
-	private  Main plugin = Main.getPlugin(Main.class);
-	
-	public  FileConfiguration msgCfg;
-	public  File msg;
-	public  FileConfiguration ceCfg;
-	public  File ce;
-	public  FileConfiguration setCfg;
-	public  File set;
-	
+	private Main plugin = Main.getPlugin(Main.class);
+
+	public FileConfiguration playerscfg;
+	public File playersfile;
+	// --------------------------
+
 	public void setup() {
 		if (!plugin.getDataFolder().exists()) {
 			plugin.getDataFolder().mkdir();
 		}
-		
-		msg = new File(plugin.getDataFolder(), "messages.yml");
-		ce = new File(plugin.getDataFolder(), "customenchants.yml");
-		set = new File(plugin.getDataFolder(), "settings.yml");
-		
-		if (!msg.exists()) {
+
+		playersfile = new File(plugin.getDataFolder(), "config.yml");
+
+		if (!playersfile.exists()) {
 			try {
-				msg.createNewFile();
-			} catch(IOException e) {
-				Bukkit.getServer().getLogger().severe("Could not load ''messages.yml''!");
+				playersfile.createNewFile();
+				Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "The config.yml file has been created");
+			} catch (IOException e) {
+				Bukkit.getServer().getConsoleSender()
+						.sendMessage(ChatColor.RED + "Could not create the config.yml file");
 			}
 		}
 		
-		if (!ce.exists()) {
-			try {
-				ce.createNewFile();
-			} catch(IOException e) {
-				Bukkit.getServer().getLogger().severe("Could not load ''customenchants.yml''!");
-			}
-		}
 		
-		if (!set.exists()) {
-			try {
-				set.createNewFile();
-			} catch(IOException e) {
-				Bukkit.getServer().getLogger().severe("Could not load ''settings.yml''!");
-			}
-		}
+		playerscfg = YamlConfiguration.loadConfiguration(playersfile);
 		
-		msgCfg = YamlConfiguration.loadConfiguration(msg);
-		ceCfg = YamlConfiguration.loadConfiguration(ce);
-		setCfg = YamlConfiguration.loadConfiguration(set);
-		
-		
-		
-		msgCfg.options().copyDefaults(true);
-		saveDefaultConfig();
-		ceCfg.options().copyDefaults(true);
-		saveDefaultConfig();
-		setCfg.options().copyDefaults(true);
-		saveDefaultConfig();
+		playerscfg.options().copyDefaults(true);
+		savePlayers();
+		plugin.saveResource("config.yml", true);
 	}
-	
-	public void saveDefaultConfig() {
-	    if (msg == null) {
-	        msg = new File(plugin.getDataFolder(), "messages.yml");
-	    }
-	    if (!msg.exists()) { 
-	         plugin.saveResource("messages.yml", false);
-	     }
-	    if (ce == null) {
-	        ce = new File(plugin.getDataFolder(), "customenchants.yml");
-	    }
-	    if (!ce.exists()) { 
-	         plugin.saveResource("customenchants.yml", false);
-	     }
-	    
-	    if (set == null) {
-	        set = new File(plugin.getDataFolder(), "sets.yml");
-	    }
-	    if (!set.exists()) { 
-	         plugin.saveResource("sets.yml", false);
-	     }
+
+	public FileConfiguration getPlayers() {
+		return playerscfg;
+	}
+
+	public void savePlayers() {
+		try {
+			playerscfg.save(playersfile);
+			Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "The config.yml file has been saved");
+
+		} catch (IOException e) {
+			Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.RED + "Could not save the config.yml file");
+		}
+	}
+
+	public void reloadPlayers() {
+		playerscfg = YamlConfiguration.loadConfiguration(playersfile);
+		Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "The config.yml file has been reloaded");
+
+	}
+	public FileConfiguration getConfig() {
+		return playerscfg;
 	}
 }
-
-
-
-
-
-
-
-
-
